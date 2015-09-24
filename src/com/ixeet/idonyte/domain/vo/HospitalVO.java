@@ -15,7 +15,14 @@ public class HospitalVO {
 	private String lon;
 	private String lastUpdtTm;
 	
-	
+	public HospitalVO() {
+		super();
+	}
+	public HospitalVO(int hospitalId, String hospitalNm) {
+		super();
+		this.hospitalId = hospitalId;
+		this.hospitalNm = hospitalNm;
+	}
 	public int getHospitalId() {
 		return hospitalId;
 	}

@@ -13,6 +13,7 @@ import com.ixeet.idonyte.application.rest.exceptions.RestBusException;
 import com.ixeet.idonyte.application.rest.vo.request.UserRequest;
 import com.ixeet.idonyte.application.rest.vo.response.StateRespTO;
 import com.ixeet.idonyte.application.rest.vo.response.UserResponse;
+import com.ixeet.idonyte.domain.constants.AppConstants;
 import com.ixeet.idonyte.domain.vo.CommonKeyValueVO;
 import com.ixeet.idonyte.domain.vo.UserTO;
 import com.ixeet.idonyte.persistance.dao.iface.CommonDao;
@@ -176,11 +177,13 @@ public class UserBusImpl implements UserBusIface{
         	if(user!=null)
         	{
         	resp.setUserDetail(user);	
+        	resp.setUserType(user.getUserType());
             resp.setStatus(AppRestConstants.status_success);
             resp.setStatusMessage(AppRestConstants.message_success);  
         	}
         	else
         	{
+        	resp.setUserType(AppConstants.USER_TYPE_NONE);
             resp.setStatus(AppRestConstants.status_userNotExist);
             resp.setStatusMessage(AppRestConstants.message_userNotExist);          		
         	}

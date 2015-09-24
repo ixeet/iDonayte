@@ -56,7 +56,7 @@ public class UserController {
         UserResponse resp = null;
         
         try {
-        	resp = new UserResponse();
+    /*    	resp = new UserResponse();
           	if(req.getFirstName() == null || (req.getFirstName() != null && req.getFirstName().trim().isEmpty()))
         	{
         		resp.setStatus(AppRestConstants.status_fieldRequired);
@@ -160,9 +160,9 @@ public class UserController {
         		resp.setErrorMessage(AppRestConstants.message_ContactDispFlagRequired);    //ContactDispFlag validation
         	}
         	else
-        	{
+        	{*/
                 resp = restService.donarRegistration(req);
-        	}
+        	//}
         } catch (RestBusException ex) {
             System.out.println("Exception # donarRegistration - "+ex);
         }
@@ -188,7 +188,7 @@ public class UserController {
         UserResponse resp = null;
         
         try {
-        	resp = new UserResponse();
+        	/*resp = new UserResponse();
          	if(req.getFirstName() == null || (req.getFirstName() != null && req.getFirstName().trim().isEmpty()))
         	{
         		resp.setStatus(AppRestConstants.status_fieldRequired);
@@ -262,9 +262,9 @@ public class UserController {
         		resp.setErrorMessage(AppRestConstants.message_lonRequired);    //Lon validation
         	}
         	else
-        	{
+        	{*/
                 resp = restService.receiverRegistration(req);
-        	}
+        	//}
         } catch (RestBusException ex) {
             System.out.println("Exception # receiverRegistration - "+ex);
         }
@@ -289,15 +289,15 @@ public class UserController {
         
         try {
         	userResponse = new UserResponse();
-       	 if(userId == 0 )
+/*       	 if(userId == 0 )
        	{
        		 userResponse.setStatus(AppRestConstants.status_fieldRequired);
        		 userResponse.setStatusMessage(AppRestConstants.message_fieldRequired);
        		 userResponse.setErrorMessage(AppRestConstants.message_UserIdRequired);    //user Id validation
        	} 
-       	 else{
+       	 else{*/
             userResponse = restService.setUserDonated(userId);
-       	 }
+       	// }
         } catch (RestBusException ex) {
             System.out.println("Exception # setUserDonated - "+ex);
         }
@@ -321,7 +321,7 @@ public class UserController {
         UserResponse userResponse = null;
         
         try {
-        	userResponse = new UserResponse();
+/*        	userResponse = new UserResponse();
        	 if(userId == 0 )
        	{
        		 userResponse.setStatus(AppRestConstants.status_fieldRequired);
@@ -329,9 +329,9 @@ public class UserController {
        		 userResponse.setErrorMessage(AppRestConstants.message_UserIdRequired);    //user Id validation
        	} 
        	 else
-       	 {
+       	 {*/
             userResponse = restService.setRecieved(userId);
-       	 }
+       	 //}
         } catch (RestBusException ex) {
             System.out.println("Exception # setRecieved - "+ex);
         }
@@ -356,7 +356,7 @@ public class UserController {
         
         try {
         	userResponse = new UserResponse();
-       	 if(userId == 0 )
+/*       	 if(userId == 0 )
        	{
        		 userResponse.setStatus(AppRestConstants.status_fieldRequired);
        		 userResponse.setStatusMessage(AppRestConstants.message_fieldRequired);
@@ -369,9 +369,9 @@ public class UserController {
      		userResponse.setErrorMessage(AppRestConstants.message_FacebookIdRequired);    //fbId validation
      	}
        	 else
-       	 {
+       	 {*/
             userResponse = restService.setFBId(userId,fbId,userType);
-       	 }
+       	 //}
         } catch (RestBusException ex) {
             System.out.println("Exception # setFBId - "+ex);
         }
@@ -394,7 +394,7 @@ public class UserController {
         UserResponse userResponse = null;
         
         try {
-        	userResponse = new UserResponse();
+/*        	userResponse = new UserResponse();
        	 if(contactNo == null || (contactNo != null && contactNo.trim().isEmpty()))
        	{
        		 userResponse.setStatus(AppRestConstants.status_fieldRequired);
@@ -402,9 +402,9 @@ public class UserController {
        		 userResponse.setErrorMessage(AppRestConstants.message_ContactRequired);    //Contact validation
        	} 
        	 else
-       	 {
+       	 {*/
             userResponse = restService.getUserDetail(contactNo);
-       	 }         		
+       	 //}         		
         } catch (RestBusException ex) {
             System.out.println("Exception # getUserDetail - "+ex);
         }

@@ -5,6 +5,7 @@
 package com.ixeet.idonyte.application.rest.bus.iface;
 
 import com.ixeet.idonyte.application.rest.exceptions.RestBusException;
+import com.ixeet.idonyte.application.rest.vo.request.CommonRequest;
 import com.ixeet.idonyte.application.rest.vo.response.CommonResponse;
 
 
@@ -15,7 +16,8 @@ import com.ixeet.idonyte.application.rest.vo.response.CommonResponse;
 public interface CommonBusIface {
 	
 	CommonResponse getDistrictList(int stateId) throws RestBusException;
-	CommonResponse getHospitalsList(String searchtxt) throws RestBusException;
+	//CommonResponse getHospitalsList(String searchtxt) throws RestBusException;
+	CommonResponse getHospitalsList(CommonRequest req) throws RestBusException;
 
     
 }
