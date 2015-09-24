@@ -6,10 +6,12 @@ import java.util.List;
 import com.ixeet.idonyte.application.rest.bus.iface.CommonBusIface;
 import com.ixeet.idonyte.application.rest.constants.AppRestConstants;
 import com.ixeet.idonyte.application.rest.exceptions.RestBusException;
+import com.ixeet.idonyte.application.rest.vo.request.CommonRequest;
 import com.ixeet.idonyte.application.rest.vo.response.AreaRespTO;
 import com.ixeet.idonyte.application.rest.vo.response.CommonResponse;
 import com.ixeet.idonyte.application.rest.vo.response.DistrictRespTO;
 import com.ixeet.idonyte.domain.vo.CommonKeyValueVO;
+import com.ixeet.idonyte.domain.vo.HospitalVO;
 import com.ixeet.idonyte.persistance.dao.iface.CommonDao;
 import com.ixeet.idonyte.persistance.dao.impl.CommonDaoImpl;
 
@@ -60,9 +62,22 @@ public class CommonBusImpl implements CommonBusIface {
 	}
 
 	@Override
-	public CommonResponse getHospitalsList(String searchtxt) throws RestBusException {
-		// TODO Auto-generated method stub
-		return null;
+	public CommonResponse getHospitalsList(CommonRequest req) throws RestBusException {
+		CommonResponse resp = new CommonResponse();
+        try {
+        	CommonDao dao = new CommonDaoImpl();
+        	List<HospitalVO> hospitalList=dao.getHospitalList(req.getSearchtxt());
+            	
+        	resp.setHospitalList(hospitalList);
+            resp.setStatus(AppRestConstants.status_success);
+            resp.setStatusMessage(AppRestConstants.message_success);  
+        } catch (Exception ex) {
+            System.out.println("Exception # getHospitalList "+ex.getMessage());
+            resp.setStatus(AppRestConstants.status_failure);
+            resp.setStatusMessage(AppRestConstants.message_failure);
+            resp.setErrorMessage(ex.getMessage());
+        }
+		return resp;
 	}
 
 

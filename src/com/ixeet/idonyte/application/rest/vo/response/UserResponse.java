@@ -22,10 +22,19 @@ public class UserResponse extends CommonRespTO{
     private UserTO userDetail;
     private List<UserTO> usersList;
     private List<StateRespTO> stateList;
+    private String userType;
     
     
     
-    public List<StateRespTO> getStateList() {
+    public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public List<StateRespTO> getStateList() {
 		return stateList;
 	}
 

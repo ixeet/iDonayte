@@ -307,21 +307,21 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		String quesryChkUserAvailability = "select temp.userType from(SELECT USRID,'D' as userType,LAST_UPDT_TM FROM user_donor_mstr where CONTACT_NO='"+contactNo+"' union SELECT USRID,'R' as userType,LAST_UPDT_TM FROM user_recepient_mstr where CONTACT_NO='"+contactNo+"')temp order by temp.LAST_UPDT_TM desc limit 1";
 		String userType=getQueryConcatedResult(quesryChkUserAvailability);
 		
-		if(userType.equalsIgnoreCase(AppConstants.USER_TYPE_DONOR))
+		if(userType!=null&&userType.equalsIgnoreCase(AppConstants.USER_TYPE_DONOR))
 		{
 			user=getDonarUser(contactNo);
 			user.setUserType(AppConstants.USER_TYPE_DONOR);
 		}
-		else if(userType.equalsIgnoreCase(AppConstants.USER_TYPE_RECEIVER))
+		else if(userType!=null&&userType.equalsIgnoreCase(AppConstants.USER_TYPE_RECEIVER))
 		{
 			user=getReceiverUser(contactNo);
 			user.setUserType(AppConstants.USER_TYPE_RECEIVER);
 		}
-		else
-		{
-			user=new UserTO();
-			user.setUserType(AppConstants.USER_TYPE_NONE);
-		}
+//		else
+//		{
+//			user=new UserTO();
+//			user.setUserType(AppConstants.USER_TYPE_NONE);
+//		}
 		
 		return user;
 	}

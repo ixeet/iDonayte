@@ -6,9 +6,16 @@ public class CommonRequest {
 	private int stateId;
 	private int districtId;
 	private int areaId;
+	private String searchtxt;
+
 	
 	
-	
+	public String getSearchtxt() {
+		return searchtxt;
+	}
+	public void setSearchtxt(String searchtxt) {
+		this.searchtxt = searchtxt;
+	}
 	public int getStateId() {
 		return stateId;
 	}
