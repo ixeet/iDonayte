@@ -130,11 +130,10 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		try {
 			conn = this.getConnection(dataSource);
 
-			String query = "SELECT USRID FROM user_donor_mstr where FNAME = ? AND LNAME = ? AND CONTACT_NO = ?";
+			String query = "SELECT USRID FROM user_donor_mstr where CONTACT_NO = ?";
 			cstmt = conn.prepareStatement(query);
-			cstmt.setString(1, user.getFirstName());
-			cstmt.setString(2, user.getLastName());
-			cstmt.setString(3, user.getContactNo());
+
+			cstmt.setString(1, user.getContactNo());
 
 			rs = cstmt.executeQuery();
 			if (rs.next()) {
@@ -165,11 +164,10 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		try {
 			conn = this.getConnection(dataSource);
 
-			String query = "SELECT USRID FROM user_recepient_mstr where FNAME = ? AND LNAME = ? AND CONTACT_NO = ?";
+			String query = "SELECT USRID FROM user_recepient_mstr where CONTACT_NO = ?";
 			cstmt = conn.prepareStatement(query);
-			cstmt.setString(1, user.getFirstName());
-			cstmt.setString(2, user.getLastName());
-			cstmt.setString(3, user.getContactNo());
+
+			cstmt.setString(1, user.getContactNo());
 
 			rs = cstmt.executeQuery();
 			if (rs.next()) {
