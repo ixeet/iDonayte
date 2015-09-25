@@ -14,6 +14,7 @@ public class HospitalVO {
 	private String lat;
 	private String lon;
 	private String lastUpdtTm;
+	private int stateId;
 	
 	public HospitalVO() {
 		super();
@@ -94,6 +95,12 @@ public class HospitalVO {
 	}
 	public void setLastUpdtTm(String lastUpdtTm) {
 		this.lastUpdtTm = lastUpdtTm;
+	}
+	public int getStateId() {
+		return stateId;
+	}
+	public void setStateId(int stateId) {
+		this.stateId = stateId;
 	}
 
 

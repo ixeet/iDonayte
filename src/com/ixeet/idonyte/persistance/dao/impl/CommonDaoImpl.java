@@ -28,6 +28,21 @@ public class CommonDaoImpl extends AppDaoAbstract implements CommonDao {
 		
 		return list;
 	}
+	
+	@Override
+	public List<CommonKeyValueVO> getBloodGroupList() throws AppDaoException {
+		List<CommonKeyValueVO> list = null;
+		
+		try {
+			String query="SELECT BLOOD_GRP_ID, BLOOD_GRP_TXT FROM blood_grp_mstr order by BLOOD_GRP_ID";
+			list=getKeyValuePairList(query);
+		} catch (AppDaoException e) {
+			e.printStackTrace();
+			throw new AppDaoException("getBloodGroupList #"+e.getMessage());
+		}
+		
+		return list;
+	}
 
 	@Override
 	public List<CommonKeyValueVO> getDistrictList(int stateId)
@@ -62,7 +77,7 @@ public class CommonDaoImpl extends AppDaoAbstract implements CommonDao {
 	}
 
 	@Override
-	public List<HospitalVO> getHospitalList(String searchtxt)
+	public List<HospitalVO> getHospitalList(int searchtxt)
 			throws AppDaoException {
 		List<HospitalVO> hospitalList = new ArrayList<HospitalVO>();
 		Connection conn = null;
@@ -72,7 +87,7 @@ public class CommonDaoImpl extends AppDaoAbstract implements CommonDao {
 
 		try{
 			conn = getConnection();
-			String query = "SELECT * FROM hospital_mstr where HOSPITAL_NAME like ? group by STATE,DISTRICT,AREA,HOSPITAL_NAME";
+			String query = "SELECT * FROM hospital_mstr where STATE_ID like ? group by STATE,DISTRICT,AREA,HOSPITAL_NAME";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "%"+searchtxt+"%");
 			System.out.println("Query  >>"+query);
@@ -92,6 +107,7 @@ public class CommonDaoImpl extends AppDaoAbstract implements CommonDao {
 				vo.setLat(rs.getString("LAT"));
 				vo.setLon(rs.getString("LON"));
 				vo.setLastUpdtTm(rs.getString("LAST_UPDT_TM"));
+				vo.setStateId(rs.getInt("STATE_ID"));
 
 				// Add into list
 				hospitalList.add(vo);

@@ -66,7 +66,8 @@ public class CommonBusImpl implements CommonBusIface {
 		CommonResponse resp = new CommonResponse();
         try {
         	CommonDao dao = new CommonDaoImpl();
-        	List<HospitalVO> hospitalList=dao.getHospitalList(req.getSearchtxt());
+        	
+        	List<HospitalVO> hospitalList=dao.getHospitalList(Integer.parseInt(req.getSearchtxt()));
             	
         	resp.setHospitalList(hospitalList);
             resp.setStatus(AppRestConstants.status_success);

@@ -10,6 +10,7 @@ package com.ixeet.idonyte.application.rest.vo.request;
  */
 public class UserRequest {
 	
+	private int searchRadius;
 	private int offset;
 	private int noOfRecords;
 
@@ -42,6 +43,14 @@ public class UserRequest {
 	
 	
 	private int userId;
+	
+	
+	public int getSearchRadius() {
+		return searchRadius;
+	}
+	public void setSearchRadius(int searchRadius) {
+		this.searchRadius = searchRadius;
+	}
 	public String getGender() {
 		return gender;
 	}

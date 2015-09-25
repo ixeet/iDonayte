@@ -11,6 +11,7 @@ import com.ixeet.idonyte.application.rest.bus.iface.UserBusIface;
 import com.ixeet.idonyte.application.rest.constants.AppRestConstants;
 import com.ixeet.idonyte.application.rest.exceptions.RestBusException;
 import com.ixeet.idonyte.application.rest.vo.request.UserRequest;
+import com.ixeet.idonyte.application.rest.vo.response.BloodGroupRespTO;
 import com.ixeet.idonyte.application.rest.vo.response.StateRespTO;
 import com.ixeet.idonyte.application.rest.vo.response.UserResponse;
 import com.ixeet.idonyte.domain.constants.AppConstants;
@@ -171,6 +172,19 @@ public class UserBusImpl implements UserBusIface{
         	}
         	resp.setStateList(stateList);
         	
+        	//Blood group master data
+        	List<CommonKeyValueVO> getBloodGroupListFromDB = commonDao.getBloodGroupList();
+        	List<BloodGroupRespTO> bloodGroupList=new ArrayList<BloodGroupRespTO>(getBloodGroupListFromDB.size());
+        	
+        	BloodGroupRespTO bloodGrpTo;
+        	for(CommonKeyValueVO bgrp:getBloodGroupListFromDB)
+        	{
+        		bloodGrpTo = new BloodGroupRespTO(bgrp.getItemCode(), bgrp.getItemName());
+        		bloodGroupList.add(bloodGrpTo);
+        	}
+        	
+        	resp.setBloodGroupList(bloodGroupList);        	
+        	
         	//Set user details
         	UserTO user=dao.getUser(contactNo);
     		    		
@@ -232,6 +246,38 @@ public class UserBusImpl implements UserBusIface{
        
         return resp;
 	}
+
+	
+	public UserResponse searchWithRadius(UserRequest req)
+			throws RestBusException {
+		UserResponse resp = new UserResponse();
+		
+        try {
+        	//lat,lon,searchText,offset,noOfRecords
+        	List<UserTO> userList=dao.search(req.getLat(),req.getLon(), req.getSearchText(),req.getSearchRadius(),req.getOffset(),req.getNoOfRecords());
+    		
+        	if(userList.size()>0)
+        	{
+        	resp.setUsersList(userList);	
+            resp.setStatus(AppRestConstants.status_success);
+            resp.setStatusMessage(AppRestConstants.message_success);  
+        	}
+        	else
+        	{
+                resp.setStatus(AppRestConstants.status_success);
+                resp.setStatusMessage(AppRestConstants.message_success);     
+                resp.setErrorMessage(AppRestConstants.message_recordnotfound);
+        	}
+        } catch (Exception ex) {
+            System.out.println("Exception # search "+ex.getMessage());
+            resp.setStatus(AppRestConstants.status_failure);
+            resp.setStatusMessage(AppRestConstants.message_failure);
+            resp.setErrorMessage(ex.getMessage());
+        }
+       
+        return resp;
+	}
+	
 	
 	
 	

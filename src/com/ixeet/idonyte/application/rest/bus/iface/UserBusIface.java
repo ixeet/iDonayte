@@ -21,5 +21,6 @@ public interface UserBusIface {
 	UserResponse setFBId(int userId,String facebookId,String userType) throws RestBusException;
 	UserResponse getUserDetail(String contactNo) throws RestBusException;
 	UserResponse search(UserRequest req) throws RestBusException;
+	UserResponse searchWithRadius(UserRequest req) throws RestBusException;
     
 }

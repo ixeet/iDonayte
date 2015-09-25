@@ -79,6 +79,7 @@ public abstract class AppDaoAbstract extends JDBCDAOAbstract{
         status = true;
     } catch (Exception e) {
         System.out.println("Error deleteOrUpdateByQuery - "+e.getMessage());
+        throw new AppDaoException(e.getMessage());
     } finally {
         closeResources(conn, cstmt, resultSet);
     }
