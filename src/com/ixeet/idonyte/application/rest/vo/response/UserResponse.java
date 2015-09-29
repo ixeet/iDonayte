@@ -22,11 +22,21 @@ public class UserResponse extends CommonRespTO{
     private UserTO userDetail;
     private List<UserTO> usersList;
     private List<StateRespTO> stateList;
+    private List<BloodGroupRespTO> bloodGroupList;
+
     private String userType;
     
     
     
-    public String getUserType() {
+    public List<BloodGroupRespTO> getBloodGroupList() {
+		return bloodGroupList;
+	}
+
+	public void setBloodGroupList(List<BloodGroupRespTO> bloodGroupList) {
+		this.bloodGroupList = bloodGroupList;
+	}
+
+	public String getUserType() {
 		return userType;
 	}
 

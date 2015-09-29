@@ -54,7 +54,7 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
                 String userType=AppConstants.USER_TYPE_DONOR;
                 
                 //Save address
-                String query_add="INSERT INTO address(ADDRESS1, ADDRESS2, AREA, DISTRICT, STATE, LAT, LON, USRID, USER_TYPE)VALUES('"+user.getAddress1()+"', '"+user.getAddress2()+"', '"+user.getArea()+"', '"+user.getDistrict()+"', '"+user.getState()+"', '"+user.getLat()+"', '"+user.getLon()+"', "+last_inserted_id+", '"+userType+"')";
+                String query_add="INSERT INTO address(ADDRESS1, ADDRESS2, AREA, DISTRICT, STATE, LAT, LON, USRID, USER_TYPE)VALUES('"+user.getAddress1()+"', '"+user.getAddress2()+"', "+user.getArea()+", "+user.getDistrict()+", "+user.getState()+", '"+user.getLat()+"', '"+user.getLon()+"', "+last_inserted_id+", '"+userType+"')";
                 System.out.println("Save address query : "+query_add);
                 deleteOrUpdateByQuery(query_add);
             }			
@@ -100,7 +100,7 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
                 String userType=AppConstants.USER_TYPE_RECEIVER;
                
                 //Save address
-                String query_add="INSERT INTO address(ADDRESS1, ADDRESS2, AREA, DISTRICT, STATE, LAT, LON, USRID, USER_TYPE)VALUES('"+user.getAddress1()+"', '"+user.getAddress2()+"', '"+user.getArea()+"', '"+user.getDistrict()+"', '"+user.getState()+"', '"+user.getLat()+"', '"+user.getLon()+"', "+last_inserted_id+", '"+userType+"')";
+                String query_add="INSERT INTO address(ADDRESS1, ADDRESS2, AREA, DISTRICT, STATE, LAT, LON, USRID, USER_TYPE)VALUES('"+user.getAddress1()+"', '"+user.getAddress2()+"', "+user.getArea()+", "+user.getDistrict()+", "+user.getState()+", '"+user.getLat()+"', '"+user.getLon()+"', "+last_inserted_id+", '"+userType+"')";
                 System.out.println("Save address query : "+query_add);
                 deleteOrUpdateByQuery(query_add);
             }	
@@ -130,11 +130,10 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		try {
 			conn = this.getConnection(dataSource);
 
-			String query = "SELECT USRID FROM user_donor_mstr where FNAME = ? AND LNAME = ? AND CONTACT_NO = ?";
+			String query = "SELECT USRID FROM user_donor_mstr where CONTACT_NO = ?";
 			cstmt = conn.prepareStatement(query);
-			cstmt.setString(1, user.getFirstName());
-			cstmt.setString(2, user.getLastName());
-			cstmt.setString(3, user.getContactNo());
+
+			cstmt.setString(1, user.getContactNo());
 
 			rs = cstmt.executeQuery();
 			if (rs.next()) {
@@ -165,11 +164,10 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		try {
 			conn = this.getConnection(dataSource);
 
-			String query = "SELECT USRID FROM user_recepient_mstr where FNAME = ? AND LNAME = ? AND CONTACT_NO = ?";
+			String query = "SELECT USRID FROM user_recepient_mstr where CONTACT_NO = ?";
 			cstmt = conn.prepareStatement(query);
-			cstmt.setString(1, user.getFirstName());
-			cstmt.setString(2, user.getLastName());
-			cstmt.setString(3, user.getContactNo());
+
+			cstmt.setString(1, user.getContactNo());
 
 			rs = cstmt.executeQuery();
 			if (rs.next()) {
@@ -447,7 +445,7 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 			conn = getConnection();
 			//SELECT * FROM(SELECT *,(((acos(sin((28.573430*pi()/180)) * sin((LAT*pi()/180))+cos((28.573430*pi()/180)) * cos((LAT*pi()/180)) * cos(((77.317110 - LON)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM address) t WHERE distance <= 8
 			
-			String sql = "SELECT donor.USRID,donor.FNAME,donor.LNAME,donor.GENDER,donor.CONTACT_NO,donor.BLOOD_GP_ID,temp.ADDRESS1,temp.AREA,temp.DISTRICT,temp.STATE FROM(SELECT *,(((acos(sin((?*pi()/180)) * sin((LAT*pi()/180))+cos((?*pi()/180)) * cos((LAT*pi()/180)) * cos(((? - LON)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM address) temp inner join user_donor_mstr donor on donor.USRID=temp.USRID inner join blood_grp_mstr bgm on bgm.BLOOD_GRP_ID=donor.BLOOD_GP_ID WHERE temp.distance <= 10 and bgm.BLOOD_GRP_TXT like ? limit ?,?";
+			String sql = "SELECT donor.USRID,donor.FNAME,donor.LNAME,donor.GENDER,donor.CONTACT_NO,donor.BLOOD_GP_ID,temp.ADDRESS1,temp.AREA,temp.DISTRICT,temp.STATE FROM(SELECT *,(((acos(sin((?*pi()/180)) * sin((LAT*pi()/180))+cos((?*pi()/180)) * cos((LAT*pi()/180)) * cos(((? - LON)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM address) temp inner join user_donor_mstr donor on donor.USRID=temp.USRID inner join blood_grp_mstr bgm on bgm.BLOOD_GRP_ID=donor.BLOOD_GP_ID WHERE temp.distance <= 50 and bgm.BLOOD_GRP_TXT like ? limit ?,?";
 			System.out.println("Search Sql Query - "+sql);
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, lat);
@@ -485,6 +483,58 @@ public class UserDaoImpl extends AppDaoAbstract implements UserDao {
 		return searchList;
 	}
 	
+	
+	@Override
+	public List<UserTO> search(String lat, String lon, String searchText,int seachRad,
+			int offset, int noOfRecords) throws AppDaoException {
+		List<UserTO> searchList = new ArrayList<UserTO>();
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		try {
+			conn = getConnection();
+			//SELECT * FROM(SELECT *,(((acos(sin((28.573430*pi()/180)) * sin((LAT*pi()/180))+cos((28.573430*pi()/180)) * cos((LAT*pi()/180)) * cos(((77.317110 - LON)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM address) t WHERE distance <= 8
+			
+			String sql = "SELECT donor.USRID,donor.FNAME,donor.LNAME,donor.GENDER,donor.CONTACT_NO,donor.BLOOD_GP_ID,temp.ADDRESS1,temp.AREA,temp.DISTRICT,temp.STATE FROM(SELECT *,(((acos(sin((?*pi()/180)) * sin((LAT*pi()/180))+cos((?*pi()/180)) * cos((LAT*pi()/180)) * cos(((? - LON)*pi()/180))))*180/pi())*60*1.1515*1.609344) as distance FROM address) temp inner join user_donor_mstr donor on donor.USRID=temp.USRID inner join blood_grp_mstr bgm on bgm.BLOOD_GRP_ID=donor.BLOOD_GP_ID WHERE temp.distance <= ? and bgm.BLOOD_GRP_TXT like ? limit ?,?";
+			System.out.println("Search Sql Query - "+sql);
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, lat);
+			stmt.setString(2, lat);
+			stmt.setString(3, lon);
+			stmt.setInt(4, seachRad);
+			stmt.setString(5, "%"+searchText+"%");			
+			stmt.setInt(6, offset);
+			stmt.setInt(7, noOfRecords);
+
+			ResultSet rs = stmt.executeQuery();
+			UserTO user = null;
+			while (rs.next()) {
+				user = new UserTO();
+				user.setUserId(rs.getInt(1));
+				user.setFirstName(rs.getString(2));
+				user.setLastName(rs.getString(3));
+				user.setGender(rs.getString(4));
+				user.setContactNo(rs.getString(5));
+				user.setBloodGroupId(rs.getInt(6));
+				user.setAddress1(rs.getString(7));
+				user.setArea(rs.getString(8));
+				user.setDistrict(rs.getString(9));
+				user.setState(rs.getString(10));
+				// Add into list
+				searchList.add(user);
+			}
+
+		} catch (Exception e) {
+			System.out.println("error in search # " + e);
+			throw new AppDaoException("search # "+e.getMessage());
+		} finally {
+			closeResources(conn, stmt, null);
+		}
+
+		return searchList;
+	}
+	
+
 	
 
 	public static void main(String args[]) throws AppDaoException {

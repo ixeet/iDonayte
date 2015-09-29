@@ -449,7 +449,40 @@ public class UserController {
     }
         
     
-    
+    /**
+     * Search Response.
+     * @param [LAT | LON | searchText |  searchRadius  |  offset | noOfRecords]
+     * @param searchText ,searchRadius
+     * @return UserResponse
+     */
+    @POST
+    @Path("/searchWithRadius")
+    @Consumes(MediaType.APPLICATION_JSON)    
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserResponse searchWithRadius(UserRequest req,@Context HttpServletRequest request) {
+        System.out.println("search >> req = "+req);
+        UserResponse resp = new UserResponse();
+        
+        try {
+        	if(req.getNoOfRecords() <= 0)
+        	{
+        		resp.setStatus(AppRestConstants.status_fieldRequired);
+        		resp.setStatusMessage(AppRestConstants.message_fieldRequired);
+        		resp.setErrorMessage(AppRestConstants.message_noOfRecordsRequired);    //noOfRecords validation
+        	}
+        	else
+        	{
+        		resp = restService.searchWithRadius(req); 
+        	}        	
+            
+        } catch (RestBusException ex) {
+            System.out.println("Exception # search - "+ex);
+        }
+        
+        System.out.println("<< End search # "+resp); 
+        return resp;
+    }
+            
     
     
 }//End of class

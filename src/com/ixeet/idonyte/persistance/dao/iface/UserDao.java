@@ -20,6 +20,7 @@ public interface UserDao {
 	UserTO getDonarUser(String contactNo) throws AppDaoException;
 	UserTO getReceiverUser(String contactNo) throws AppDaoException;
 	
+	List<UserTO> search(String lat,String lon,String searchText,int searchRad,int offset,int noOfRecords) throws AppDaoException;
 	List<UserTO> search(String lat,String lon,String searchText,int offset,int noOfRecords) throws AppDaoException;
     
 }
